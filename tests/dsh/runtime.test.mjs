@@ -99,13 +99,14 @@ test('Jev 运行工具在真实 dsh 注册器启动独立循环，关闭时不�
   assert.ok(!mock.events.some(e => ['move', 'use'].includes(e.command)))
 })
 
-test('真实 dsh 一次启动后自动连续调用 Jev，控制工具停止后台循环', async t => {
+test('真实 dsh 一次启动后连续调用 Jev，推理期间停止后不再提交动作', async t => {
   const { call, mock } = await fixture(t, undefined, { jevEnabled: true })
   const originalFetch = globalThis.fetch; const originalKey = process.env.OPENROUTER_API_KEY
   process.env.OPENROUTER_API_KEY = 'test-only'
   let calls = 0
   globalThis.fetch = async (url, options) => {
     calls++; assert.equal(String(url), 'https://openrouter.ai/api/alpha/decisions')
+    if (calls === 3) await wait(30000, undefined, { signal: options.signal })
     const body = JSON.parse(options.body)
     return new Response(JSON.stringify({ id: 'test-choice', model: 'typesafe/jev-test', answers: Object.fromEntries(Object.entries(body.questions).map(([id, question]) => {
       const keys = Object.keys(question.criteria); const choice = id === 'intent' ? 'use' : keys[0]
@@ -120,6 +121,9 @@ test('真实 dsh 一次启动后自动连续调用 Jev，控制工具停止后�
   assert.equal(calls, 3)
   const stopped = await call('run_stop', {})
   assert.equal(stopped.isError, false, JSON.stringify(stopped))
-  assert.ok(mock.events.some(e => e.command === 'use'))
+  const actions = mock.events.filter(e => e.command === 'use').length
+  assert.equal(actions, 2)
+  await wait(300)
+  assert.equal(mock.events.filter(e => e.command === 'use').length, actions)
   assert.equal((await call('move', { x: 4, y: 2 })).isError, true)
 })
