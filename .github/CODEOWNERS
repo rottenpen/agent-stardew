@@ -1,0 +1,10 @@
+# 默认审核人
+* @rottenpen
+
+# 跨组件协议和游戏写操作需要维护者重点审核
+/packages/protocol/ @rottenpen
+/packages/cli/ @rottenpen
+/packages/dsh-plugin/src/agent/ @rottenpen
+/mods/AgentStardew/ @rottenpen
+/scripts/ @rottenpen
+/.github/ @rottenpen

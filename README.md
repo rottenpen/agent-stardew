@@ -99,6 +99,8 @@ pnpm dev
 
 ## 检查与扩展
 
+欢迎通过 Issue 和 Pull Request 参与开发。开始前请阅读[贡献指南](CONTRIBUTING.md)；新增基础动作需要同步协议、CLI、Mod、mock 和测试，模拟验证与真实游戏结果必须分别说明。
+
 | 命令 | 用途 |
 |---|---|
 | `pnpm check` | 类型检查、构建、协议、CLI 与模拟农务测试 |
@@ -117,4 +119,4 @@ pnpm dev
 
 源码边界：`packages/protocol` 定义协议，`packages/cli` 处理命令和连接，`packages/dsh-plugin` 注册工具与 skill，`mods/AgentStardew` 在游戏主线程执行操作。自主游玩循环由 dsh 插件内的 Jev 控制器持有。完整验收见 [SPEC.md](SPEC.md)。
 
-本项目为非官方星露谷工具，需要自行安装 Stardew Valley 与 SMAPI。仓库不分发游戏本体、游戏资源或用户存档；配套像素插画的来源见[素材清单](assets/visual/README.md)。
+本项目为非官方星露谷工具，采用 [MIT License](LICENSE)，需要自行安装 Stardew Valley 与 SMAPI。仓库不分发游戏本体、游戏资源或用户存档；配套像素插画的来源见[素材清单](assets/visual/README.md)。

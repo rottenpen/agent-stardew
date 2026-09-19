@@ -20,10 +20,10 @@
 
 前置条件是安装发布说明指定的 Node.js、pnpm 和 dsh，并准备自己的星露谷与 SMAPI。模型及凭据沿用 dsh 的配置入口。首个发行版的实机支持范围以 macOS 验收结果为准；其他平台分别标注测试状态。
 
-以下是研发目标体验，`<仓库地址>` 和 `<发布标签>` 在正式贡献指南中替换为真实地址及版本：
+以下是研发目标体验；完整的分支、测试和 PR 要求见[贡献指南](../CONTRIBUTING.md)：
 
 ```sh
-git clone --branch <发布标签> <仓库地址> agent-stardew
+git clone https://github.com/rottenpen/agent-stardew.git
 cd agent-stardew
 pnpm install --frozen-lockfile
 pnpm run setup
@@ -70,7 +70,8 @@ dsh --profile <项目profile>
 
 | 要贡献的能力 | 修改入口 | 最小验证 |
 |---|---|---|
-| 农务策略、失败恢复、操作顺序 | `.agents/skills/<名称>/SKILL.md` 及必要脚本 | 一个正常任务和一个不同起始状态；说明结果判据 |
+| 原子技能、失败恢复、操作顺序 | `packages/dsh-plugin/src/agent/skills.ts` | 一个正常任务和一个不同起始状态；说明结果判据 |
+| dsh 聊天使用方式与工具说明 | `packages/dsh-plugin/skills/stardew/SKILL.md`、`packages/dsh-plugin/src/index.ts` | 工具 schema、调用和取消测试 |
 | 新的基础动作或观察字段 | `packages/protocol` 的契约、Mod 处理器、必要的 CLI 适配 | 请求与结果样例、失败样例、实机状态变化 |
 | 委派、候选验证、启用或恢复 | `packages/dsh-plugin/src/agent/` | 不调用模型的状态与生命周期测试；涉及游戏的部分追加实测 |
 

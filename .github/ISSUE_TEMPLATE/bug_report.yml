@@ -1,0 +1,65 @@
+name: 错误报告
+description: 报告可以稳定复现的异常行为
+title: "[Bug] "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: 感谢反馈。请删除凭据、个人绝对路径和存档内容，并区分 mock 与真实游戏结果。
+  - type: textarea
+    id: problem
+    attributes:
+      label: 问题描述
+      description: 实际发生了什么，预期行为是什么？
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: 复现步骤
+      placeholder: |
+        1. 执行 ...
+        2. 输入目标 ...
+        3. 观察到 ...
+    validations:
+      required: true
+  - type: dropdown
+    id: environment
+    attributes:
+      label: 运行环境
+      options:
+        - 自动化测试
+        - Mock 农场
+        - 真实游戏
+        - 尚不确定
+    validations:
+      required: true
+  - type: input
+    id: revision
+    attributes:
+      label: 项目版本
+      description: 提交 SHA、发布标签或版本号。
+    validations:
+      required: true
+  - type: textarea
+    id: versions
+    attributes:
+      label: 环境版本
+      description: 操作系统、Node.js、pnpm、dsh；涉及实机时补充 Stardew Valley 与 SMAPI 版本。
+    validations:
+      required: true
+  - type: textarea
+    id: diagnostics
+    attributes:
+      label: 诊断与最小日志
+      description: 提供错误码、调用编号、前后状态摘要和已运行的检查。不要粘贴凭据、完整 work 目录或存档。
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: 提交前确认
+      options:
+        - label: 我已移除凭据、个人绝对路径和存档内容。
+          required: true
+        - label: 我没有把 mock 或自动化测试描述为真实游戏验证。
+          required: true

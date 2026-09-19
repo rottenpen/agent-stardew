@@ -1,0 +1,45 @@
+name: 原子技能或策略改进
+description: 提议改进技能前提、执行顺序、完成判据或失败恢复
+title: "[Skill] "
+labels:
+  - enhancement
+body:
+  - type: textarea
+    id: goal
+    attributes:
+      label: 目标场景
+      description: 给出用户目标以及相关的原子技能。
+    validations:
+      required: true
+  - type: textarea
+    id: current
+    attributes:
+      label: 当前行为
+      description: 描述起始状态、候选技能、实际选择或阻塞结果。
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: 期望行为与判据
+      description: 说明技能应在什么前提下出现、怎样执行以及如何确认完成。
+    validations:
+      required: true
+  - type: textarea
+    id: cases
+    attributes:
+      label: 建议测试场景
+      description: 至少包含一个正常场景和一个不同起始状态或失败场景。
+    validations:
+      required: true
+  - type: dropdown
+    id: evidence
+    attributes:
+      label: 证据来源
+      options:
+        - 自动化测试
+        - Mock 农场
+        - 真实游戏
+        - 设计提案，尚未验证
+    validations:
+      required: true

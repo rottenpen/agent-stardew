@@ -1,0 +1,43 @@
+name: 基础动作或观察字段提案
+description: 提议扩展共享协议和 SMAPI Mod 的底层能力
+title: "[Action] "
+labels:
+  - enhancement
+body:
+  - type: textarea
+    id: goal
+    attributes:
+      label: 用户目标与能力缺口
+      description: 哪个真实目标会被当前底层能力阻塞？
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: 当前观察与阻塞证据
+      description: 描述已有观察、错误码、缺失字段或缺失命令。请区分 mock 和真实游戏。
+    validations:
+      required: true
+  - type: textarea
+    id: contract
+    attributes:
+      label: 建议的协议契约
+      description: 说明请求参数、结果、失败情况、是否为写操作及兼容性影响。
+    validations:
+      required: true
+  - type: textarea
+    id: verification
+    attributes:
+      label: 验收方式
+      description: 列出成功、失败、过期引用、取消以及实机状态变化的验证方式。
+    validations:
+      required: true
+  - type: checkboxes
+    id: scope
+    attributes:
+      label: 实现范围确认
+      options:
+        - label: 实现将同步协议、CLI、Mod、mock、测试和必要文档。
+          required: true
+        - label: 不通过修改存档或直接写游戏状态实现动作。
+          required: true
