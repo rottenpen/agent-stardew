@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
 import { createRequire } from 'node:module'
-import { readFile } from 'node:fs/promises'
+import { mkdir, readFile } from 'node:fs/promises'
 import { pathToFileURL, fileURLToPath } from 'node:url'
 import { setTimeout as wait } from 'node:timers/promises'
 import { startMock } from '../../work/test-support/mock-server.mjs'
@@ -16,6 +16,7 @@ const { default: Subprocess } = await load('@deepseek-ai/dsh-subprocess-local')
 const plugin = await import('../../packages/dsh-plugin/dist/index.js')
 let seq = 0
 async function fixture(t, options, config = {}) {
+  await mkdir(new URL('../../work/tests/', import.meta.url), { recursive: true })
   const mock = await startMock(options)
   const ctx = new Context()
   const fibers = []
