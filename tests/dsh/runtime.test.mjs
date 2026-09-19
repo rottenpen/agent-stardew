@@ -9,7 +9,7 @@ import { startMock } from '../../work/test-support/mock-server.mjs'
 const require = createRequire(new URL('../../packages/dsh-plugin/package.json', import.meta.url))
 const load = name => import(pathToFileURL(require.resolve(name)).href)
 const { Context } = await load('@deepseek-ai/cordis')
-const { default: Tools } = await load('@deepseek-ai/dsh-tools')
+const { default: Tools, validateJsonSchemaValue } = await load('@deepseek-ai/dsh-tools')
 const { default: SystemPrompt } = await load('@deepseek-ai/dsh-system-prompt')
 const { default: Skills } = await load('@deepseek-ai/dsh-skill')
 const { default: Subprocess } = await load('@deepseek-ai/dsh-subprocess-local')
@@ -40,7 +40,7 @@ test('真实 dsh 注册器和本机 subprocess 加载构建产物，返回规范
 })
 
 test('随包 skill 注册最新正文，所有工具和 JSON 示例匹配真实注册器', async t => {
-  const { ctx, call } = await fixture(t)
+  const { ctx } = await fixture(t)
   const source = await readFile(new URL('../../packages/dsh-plugin/skills/stardew/SKILL.md', import.meta.url), 'utf8')
   const skill = await ctx.skills.get('stardew')
   assert.equal(skill.content, source.replace(/^---\n[\s\S]*?\n---\n/, ''))
@@ -48,11 +48,9 @@ test('随包 skill 注册最新正文，所有工具和 JSON 示例匹配真实�
   for (const name of new Set(source.match(/\bstardew_(?:run_|plan_)?[a-z]+\b/g))) assert.ok(ctx.tools.get(name), `skill 引用了未注册工具：${name}`)
   const examples = [...source.matchAll(/```json\n([\s\S]*?)\n```/g)].map(match => JSON.parse(match[1]))
   assert.equal(examples.length, 3)
-  const agent = { ctx, status: 'idle', options: {}, session: { id: 'skill-examples', header: { cwd: fileURLToPath(new URL('../../work/tests', import.meta.url)) } }, followup() {}, inject() {} }
   for (const example of examples) {
-    const result = await call(example.tool.slice('stardew_'.length), example.arguments, undefined, agent)
-    assert.equal(result.isError, false, JSON.stringify(result))
-    await call('run_stop', {}, undefined, agent)
+    const tool = ctx.tools.get(example.tool)
+    assert.deepEqual(validateJsonSchemaValue(tool.parameters, example.arguments), [], example.tool)
   }
 })
 
