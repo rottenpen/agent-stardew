@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#35533d">
+  <meta name="stardew-token" content="__STARDew_TOKEN__">
+  <title>农场小助手 · Jev</title>
+  <link rel="icon" href="/stardew/assets/app-icon-chicken-whale-v1.png">
+  <link rel="stylesheet" href="/stardew/style.css">
+  <script src="/stardew/app.js" defer></script>
+</head>
+<body>
+<a class="skip-link" href="#goal">跳到任务输入</a>
+<svg class="symbols" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+  <symbol id="i-leaf" viewBox="0 0 24 24"><path d="M11 21V11M11 14H7V12H4V6H8V8H11M11 11H15V9H18V3H14V5H11"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 4V20L19 12Z"/></symbol>
+  <symbol id="i-pause" viewBox="0 0 24 24"><path d="M6 4H9V20H6ZM15 4H18V20H15Z"/></symbol>
+  <symbol id="i-stop" viewBox="0 0 24 24"><path d="M5 5H19V19H5Z"/></symbol>
+  <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12L7 6H17L22 12L17 18H7Z"/><path d="M10 10H14V14H10Z"/></symbol>
+  <symbol id="i-book" viewBox="0 0 24 24"><path d="M3 4H11L12 6L13 4H21V20H13L12 22L11 20H3ZM12 6V22M6 8H9M15 8H18M6 12H9M15 12H18"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12H20M14 6L20 12L14 18"/></symbol>
+  <symbol id="i-bag" viewBox="0 0 24 24"><path d="M5 8H19V21H5ZM8 8V3H16V8M9 12H15V17H9Z"/></symbol>
+  <symbol id="i-water" viewBox="0 0 24 24"><path d="M4 10H15V20H4ZM6 10V5H13V10M15 12L20 8L22 11L15 17M8 4V2"/></symbol>
+  <symbol id="i-tool" viewBox="0 0 24 24"><path d="M5 21L15 6M8 4L20 12M8 4L5 8M20 12L17 16"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><path d="M7 3H17L21 7V17L17 21H7L3 17V7ZM12 7V12H16"/></symbol>
+</svg>
+<main>
+  <header class="masthead">
+    <div class="brand">
+      <img src="/stardew/assets/app-icon-chicken-whale-v1.png" width="62" height="62" alt="" class="brand-icon">
+      <div><h1><span>星露谷</span> · <span>农场小助手</span></h1><p>把今天的农活，交给 Jev。</p></div>
+    </div>
+    <a class="button chat-link" href="/">回到 dsh 聊天<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+  </header>
+
+  <div class="workspace">
+    <section class="panel field-panel" aria-labelledby="maptitle">
+      <div class="panel-heading">
+        <div class="heading-group"><svg class="icon" aria-hidden="true"><use href="#i-leaf"/></svg><h2 id="maptitle">我的农场</h2></div>
+        <div class="field-controls"><span id="mode" class="badge">等待连接</span><button id="observe" class="small" type="button"><svg class="icon" aria-hidden="true"><use href="#i-eye"/></svg>观察</button></div>
+      </div>
+      <div class="farm-hud" id="farmHud" hidden>
+        <div class="calendar"><span id="season">春</span><strong id="day">1</strong><small id="year">第 1 年</small></div>
+        <div class="farm-clock"><span>农场时间</span><strong id="gameTime">6:00</strong><span id="farmLocation">Farm</span></div>
+        <div class="energy"><label for="energyMeter">体力 <span id="energyValue"></span></label><meter id="energyMeter" min="0" max="270" value="0" low="54" high="135" optimum="270"></meter><span id="position"></span></div>
+      </div>
+      <div class="mapwrap" id="mapwrap">
+        <img class="farm-art" src="/stardew/assets/welcome-farm-day-v1.png" alt="像素风的春日农场：农务助手在木屋旁照料作物" width="1536" height="1024">
+        <div class="map-empty" id="mapEmpty"><strong>农场准备好了吗？</strong><p>载入游戏存档，再点击「观察」。</p><span>此处为欢迎插画，非实时游戏画面</span></div>
+        <canvas id="map" width="720" height="400" role="img" aria-label="根据当前游戏观察绘制的农场地图"></canvas>
+        <span class="map-caption" id="mapCaption" hidden>当前观察 · 结构化地图</span>
+      </div>
+      <div class="world-strip" id="world">等待读取地点、时间和体力</div>
+      <div class="legend" id="legend" hidden><span><i class="dot player"></i>角色</span><span><i class="dot crop"></i>作物</span><span><i class="dot water"></i>已浇水 / 水源</span><span><i class="dot interact"></i>交互点</span><span><i class="dot target"></i>当前目标</span></div>
+      <div class="inventory-heading"><svg class="icon" aria-hidden="true"><use href="#i-bag"/></svg><h3>随身背包</h3><span id="heldItem">尚未观察</span></div>
+      <div class="inventory" id="inventory"><p class="muted">观察农场后，在这里查看工具和物品。</p></div>
+      <p id="capability" class="hint"></p>
+    </section>
+
+    <div class="right-column">
+      <section class="panel task-panel" aria-labelledby="tasktitle">
+        <div class="panel-heading"><div class="heading-group"><svg class="icon" aria-hidden="true"><use href="#i-book"/></svg><h2 id="tasktitle">今天的任务</h2></div><span id="status" class="badge">尚未开始</span></div>
+        <div class="task-content">
+          <label for="goal">想让小助手做些什么？</label>
+          <textarea id="goal" maxlength="2000" rows="3" placeholder="例如：种下 5 颗防风草并浇水，然后回屋睡觉。"></textarea>
+          <div class="actions">
+            <button class="primary" id="start" type="button"><svg class="icon" aria-hidden="true"><use href="#i-play"/></svg>开始农活</button>
+            <button class="primary" id="resume" type="button" hidden disabled><svg class="icon" aria-hidden="true"><use href="#i-play"/></svg>继续任务</button>
+            <button class="primary" id="pause" type="button" hidden disabled><svg class="icon" aria-hidden="true"><use href="#i-pause"/></svg>暂停 Agent</button>
+            <button id="stop" type="button" class="stop" disabled><svg class="icon" aria-hidden="true"><use href="#i-stop"/></svg>停止</button>
+          </div>
+          <div class="assistant-status"><img src="/stardew/assets/agent-farmer-idle-v1.png" alt="" width="60" height="60"><div><span class="status-label"><i id="activity" class="activity-dot"></i>Jev 农务助手</span><p id="message" role="status" aria-live="polite">正在连接运行控制器…</p></div></div>
+          <p class="hint clock-note"><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg>暂停 Agent 只停止操作，游戏时间照常。</p>
+          <details class="advanced"><summary>任务设置与完成条件</summary>
+            <p class="hint" id="settingsHint" hidden>暂停时可修改目标；调整以下设置需先停止任务。</p>
+            <div class="settings"><label>最多决策次数<input id="budget" type="number" min="1" max="1000" value="100"></label><label>上限（分钟）<input id="minutes" type="number" min="1" max="120" value="15"></label><label>观察半径<input id="radius" type="number" min="1" max="16" value="8"></label></div>
+            <p class="hint">完成条件选填。填写后按游戏证据验收；自由目标结束时提示复核。</p>
+            <div class="completion">
+              <label>到达地图（内部名称）<input id="location" placeholder="例如 Farm" maxlength="100"></label>
+              <label>新增观察格数<input id="explored" type="number" min="1" max="65536" placeholder="例如 100"></label>
+              <label>作物 ID<input id="crop" placeholder="24（防风草）" maxlength="100"></label>
+              <label>新种植数量<input id="count" type="number" min="1" max="1000" placeholder="例如 5"></label>
+              <label>本次浇水作物格数<input id="wateredCrops" type="number" min="1" max="1000" placeholder="包括已有作物"></label>
+            </div>
+            <div class="checks"><label><input id="watered" type="checkbox">新种作物当日已浇水</label><label><input id="nextDay" type="checkbox">日期已推进</label><label><input id="refill" type="checkbox">水壶补水成功</label><label><input id="emptySoil" type="checkbox">允许预先浇空耕地</label></div>
+            <button id="step" type="button" class="small">只执行一步</button>
+          </details>
+        </div>
+      </section>
+
+      <section class="panel planner-panel" aria-labelledby="plantitle">
+        <div class="panel-heading"><h2 id="plantitle">任务规划</h2><span class="badge" id="plannerMode">Jev 直接执行</span></div>
+        <div class="planner-content"><p id="plannerSummary">复杂目标可以在 dsh 聊天中提出，大模型负责分阶段，Jev 负责行动。</p><p id="plannerBudget" class="hint"></p><a href="/" class="text-link">去聊天里规划<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a></div>
+      </section>
+    </div>
+
+    <section class="panel journal-panel" aria-labelledby="journaltitle">
+      <div class="panel-heading"><div class="heading-group"><svg class="icon" aria-hidden="true"><use href="#i-book"/></svg><h2 id="journaltitle">农场日记</h2></div><span id="cost" class="muted"></span></div>
+      <div class="journal-content"><div class="stats"><span>已行动 <strong id="steps">0</strong> 步</span><span>已观察 <strong id="tiles">0</strong> 格</span><span>用时 <strong id="elapsed">0s</strong></span><span>Jev 决策 <strong id="calls">0</strong> 次</span></div><div class="log" id="events"><p class="empty">小助手的第一篇农场日记，等你来开启。</p></div></div>
+    </section>
+
+    <details class="panel debug-panel"><summary>Jev 决策与运行详情<span>概率、调用证据和日志</span></summary>
+      <div class="debug-content">
+        <div class="decision-columns"><section><div class="title"><h2>本轮决策</h2><span class="badge" id="latency">等待决策</span></div><p class="muted model" id="model">OpenRouter · ~typesafe/jev-latest</p><div id="intent"><p class="empty">运行后显示实际返回的概率。</p></div></section><section><h2 id="actiontitle">具体动作</h2><div id="choices"></div></section></div>
+        <p class="hint">类别概率与动作概率分别展示，不代表任务成功率。</p>
+        <details><summary>模型调用证据</summary><pre id="evidence">尚无记录。</pre></details>
+        <details><summary>任务证据与记录位置</summary><pre id="progress"></pre></details>
+        <details><summary>阶段证据</summary><pre id="plannerEvidence"></pre></details>
+      </div>
+    </details>
+  </div>
+  <footer><span>一件农活，一步进展。</span><span>Jev × dsh · 星露谷运行面板</span></footer>
+</main>
+</body>
+</html>

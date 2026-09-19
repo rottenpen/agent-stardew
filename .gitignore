@@ -3,6 +3,7 @@ dist/
 lib/
 coverage/
 work/
+packages/dsh-plugin/ui/assets/
 .env
 .env.*
 !.env.example

@@ -1,8 +1,12 @@
 # agent-stardew 与 dsh 插件 SPEC
 
-状态：已确认，进入实现。调研日期：2026-09-16。参考项目已静态核查，尚未在游戏中验证。
+状态：已确认，M0 开发版已实现，实机任务验收待完成。调研日期：2026-09-16；开发验证日期：2026-09-17，见[验证记录](docs/verification.md)。参考项目已静态核查。
 
-交付一个 monorepo：`agent-stardew` 提供独立的游戏操作 CLI，`dsh-stardew` 将同一组操作注册成 dsh 工具。SMAPI Mod 随仓库维护，负责读取游戏状态和执行动作。用户在 dsh 中描述目标，由 dsh 的模型持续调用工具完成游戏任务。
+交付一个 monorepo：`agent-stardew` 提供独立的游戏操作 CLI，`dsh-stardew` 将同一组操作注册成 dsh 工具。SMAPI Mod 随仓库维护，负责读取游戏状态和执行动作。用户在 dsh 的 Jev 运行面板中输入目标，由插件内的 Jev 控制器持续调用 CLI 完成游戏任务。聊天入口可启动同一控制器。
+
+自主游玩的架构、运行状态、动态候选和开发阶段见 [Jev 自主游玩设计](docs/jev-runtime.md)。现有 CLI、协议与 Mod 继续作为游戏基建。后续能力开发按[自主补能力方案](docs/self-improving-agent.md)处理明确缺口。
+
+开源交付分为[研发与贡献体验](docs/developer-experience.md)和[桌面安装与使用](docs/desktop-distribution.md)两条路径，共用游戏能力与 Agent 实现。
 
 ## 1. 目标与验收
 
@@ -93,17 +97,18 @@ agent-stardew/
 └── pnpm-workspace.yaml
 ```
 
-TypeScript 部分使用 pnpm workspace；Mod 使用 .NET 项目，由根级构建命令统一调度。CLI 的游戏操作由 Mod 执行，dsh 负责目标规划和模型调用。
+TypeScript 部分使用 pnpm workspace；Mod 使用 .NET 项目，由根级构建命令统一调度。CLI 的游戏操作由 Mod 执行，dsh 插件的控制器负责 Jev 模型调用与持续决策，聊天模型按需参与目标澄清和能力开发。
 
 调用关系：
 
 ```text
-用户在 dsh 中描述目标
-  → dsh 的模型选择 stardew_* 工具
+用户在 dsh 运行面板输入目标并开始
+  → Jev 控制器通过 CLI 读取现场并生成候选
+  → OpenRouter Jev 选择意图与对应动作
   → dsh-stardew 以 argv 启动 agent-stardew，并读取 --json 结果
   → CLI 通过本机 WebSocket 连接 AgentStardew Mod
-  → Mod 在游戏主线程读取状态、执行动作、返回终态
-  → CLI 与插件返回可验证的结果，dsh 决定下一步
+  → Mod 在游戏主线程执行动作、返回终态与观察
+  → 控制器核验、更新记忆并继续；面板展示过程与控制按钮
 ```
 
 Mod 常驻并持有快照引用和动作状态；CLI 每次调用连接到同一实例。插件通过依赖解析定位随包交付的 CLI 入口，也允许配置显式路径，避免依赖交互式终端的全局 PATH。
@@ -197,7 +202,7 @@ inventory: slot=0 Hoe; slot=3 Watering Can; slot=4 Parsnip Seeds x5
 - 提供中文的通用工具调用/结果展示；持久化元数据只包含重放需要的游戏事实。
 - `package.json` 声明 `dsh.bundle.patch`，patch 挂载插件。
 
-拟注册的工具：`stardew_snapshot`、`stardew_move`、`stardew_select`、`stardew_use`、`stardew_interact`、`stardew_menu`、`stardew_screenshot`、`stardew_status`、`stardew_stop`。
+启用 Jev 时注册 `stardew_run_start/status/pause/resume/stop` 运行工具，以及只读观察和停止工具；原子写工具在普通工具模式注册。复杂目标使用 `stardew_plan_start/next/finish` 在原聊天中规划阶段、接收结果与汇总，各阶段共享预算。运行面板通过同一个控制器执行开始、单步、暂停、继续和停止。
 
 插件配置包括 Mod endpoint、CLI 入口、单次动作时限和输出上限。对游戏的写动作遵循上述单动作约束，多次工具调用按依赖顺序执行。连接地址首版限制为本机回环。
 
@@ -208,7 +213,7 @@ dsh plugin --profile web add ./packages/dsh-plugin
 dsh --profile web
 ```
 
-在 dsh 会话中输入：
+在 `/stardew` 运行面板输入，或通过 dsh 会话启动：
 
 > 查看当前农场，种下 5 颗防风草并浇水，然后回屋睡觉。每一步根据游戏状态检查结果。
 
@@ -255,4 +260,3 @@ dsh --profile web
 | 模型等待期间游戏推进 | 错过营业时间或体力/日程规划失效 | 显式提供游戏时刻，首版测量任务耗时；根据结果决定时间控制需求 |
 | 菜单、过场或睡觉切换状态 | 操作失效或完成判定提前 | 返回明确的交互状态，等待对应事件和稳定快照 |
 | 多个 Agent 同时控制一个角色 | 动作互相覆盖 | 游戏实例统一串行写操作，冲突调用返回 BUSY |
-

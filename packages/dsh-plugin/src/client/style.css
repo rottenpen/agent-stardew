@@ -1,0 +1,29 @@
+.stardew-entry { flex-shrink: 0; white-space: nowrap; font-family: var(--dsw-font-family); corner-shape: round; }
+.stardew-entry:focus-visible { outline: 2px solid var(--dsw-alias-brand-primary); outline-offset: 2px; }
+.stardew-task-actions button {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  min-height: 32px; padding: 4px 10px; border: 1px solid #9f743d; border-radius: 4px;
+  background: #fff0c6; color: #51351f; font: inherit; font-size: 12px; cursor: pointer;
+}
+.stardew-task-actions button:hover { background: #ffe2a2; }
+.stardew-entry img, .stardew-task img { object-fit: contain; image-rendering: pixelated; }
+.stardew-dock :is(a,button):focus-visible, .stardew-task :is(button,summary):focus-visible { outline: 2px solid #28677b; outline-offset: 3px; }
+.stardew-dock { height: 100%; min-height: 0; display: flex; flex-direction: column; background: #fff0c6; }
+.stardew-dock-toolbar { display: flex; align-items: center; gap: 12px; flex-shrink: 0; padding: 8px 12px; border-bottom: 1px solid #caa271; color: #684a2f; font-size: 11px; }
+.stardew-dock-toolbar > span { margin-right: auto; }
+.stardew-dock-toolbar a, .stardew-dock-toolbar button { white-space: nowrap; color: #51351f; font: inherit; font-size: 12px; }
+.stardew-dock-toolbar button { border: 1px solid #ad874f; border-radius: 3px; padding: 3px 8px; background: #f2d79f; cursor: pointer; }
+.stardew-dock iframe { width: 100%; flex: 1; min-height: 0; border: 0; }
+.stardew-task { margin: 8px 0; padding: 12px 14px; border: 1px solid #c6a36e; border-radius: 5px; background: #fff5d9; color: #483325; font-size: 13px; overflow-wrap: anywhere; }
+.stardew-task-heading { display: flex; gap: 7px; align-items: center; }
+.stardew-task-heading > span { margin-left: auto; color: #66513a; font-size: 11px; }
+.stardew-task p { margin: 8px 0 0; line-height: 1.6; white-space: pre-wrap; }
+.stardew-task .stardew-task-summary { color: #705334; font-size: 12px; }
+.stardew-task[data-error] .stardew-task-summary { color: #923f31; }
+.stardew-task-actions { display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; margin-top: 10px; }
+.stardew-task-actions > span { color: #705334; font-size: 11px; }
+.stardew-task-actions .stardew-inspect { background: transparent; border-color: transparent; font-size: 11px; }
+.stardew-task details { margin-top: 10px; font-size: 11px; }
+.stardew-task summary { cursor: pointer; color: #705334; }
+.stardew-task pre { max-height: 220px; overflow: auto; padding: 8px; background: #f0e4c6; white-space: pre-wrap; font-size: 11px; }
+@media (max-width: 540px) { .stardew-entry { width: 28px; padding: 0; }.stardew-entry-label { display: none; } }

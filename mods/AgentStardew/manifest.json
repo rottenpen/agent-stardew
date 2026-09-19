@@ -1,0 +1,9 @@
+{
+  "Name": "Agent Stardew",
+  "Author": "agent-stardew",
+  "Version": "0.1.0",
+  "Description": "通过本机协议向 Agent 提供游戏观察和正常动作。",
+  "UniqueID": "AgentStardew.Bridge",
+  "EntryDll": "AgentStardew.dll",
+  "MinimumApiVersion": "4.5.2"
+}

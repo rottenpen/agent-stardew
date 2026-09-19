@@ -1,0 +1,19 @@
+{
+  "name": "@agent-stardew/protocol",
+  "version": "0.1.0",
+  "type": "module",
+  "main": "dist/index.js",
+  "exports": {
+    ".": {
+      "types": "./dist/types/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "zod": "4.1.5"
+  },
+  "types": "dist/types/index.d.ts"
+}

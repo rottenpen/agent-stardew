@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>连接本机 dsh</title>
+  <link rel="stylesheet" href="/stardew-connect/style.css">
+  <script src="/stardew-connect/app.js" defer></script>
+</head>
+<body data-state="__LOGIN_STATE__">
+  <main>
+    <header><svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3" y="4" width="18" height="13" rx="3"/><path d="M8 21h8m-4-4v4m-5-12 3 3-3 3m6 0h4"/></svg><span>dsh · 本机工作区</span></header>
+    <h1>连接你的工作区</h1>
+    <p class="intro">服务正在运行。用启动链接登录这个浏览器，即可继续聊天和农场任务。</p>
+    <form id="connect-form" novalidate>
+      <label for="launch-link">启动链接</label>
+      <p id="link-hint" class="hint">复制启动 dsh 的终端里，<code>dsh web:</code> 后面的完整地址。</p>
+      <input id="launch-link" type="password" autocomplete="off" spellcheck="false" autocapitalize="off" placeholder="http://127.0.0.1:3080/?token=…" aria-describedby="link-hint feedback" required>
+      <p id="feedback" role="status" aria-live="polite"></p>
+      <button id="connect" type="submit">连接工作区 <span aria-hidden="true">→</span></button>
+    </form>
+    <section class="help" aria-labelledby="help-title">
+      <h2 id="help-title">找不到启动链接？</h2>
+      <p>在本项目的终端运行：</p>
+      <div class="command"><code>pnpm open --print</code><button id="copy-command" type="button" aria-label="复制获取登录链接的命令">复制命令</button></div>
+      <p class="hint">想在默认浏览器直接打开？运行 <code>pnpm open</code>。</p>
+    </section>
+    <footer>首次使用其他浏览器，或重新打开无痕窗口时，需要再次连接。已有聊天和任务会保留。</footer>
+  </main>
+</body>
+</html>

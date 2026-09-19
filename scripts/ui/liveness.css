@@ -1,0 +1,10 @@
+#stardew-connection-guard[hidden] { display: none; }
+#stardew-connection-guard { position: fixed; inset: 0; z-index: 2147483647; display: grid; place-items: center; padding: 24px; background: rgb(15 17 21 / .72); color: #0f1115; font: 14px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+#stardew-connection-guard > div { width: min(100%, 360px); padding: 20px; border: 1px solid #d7d9de; border-radius: 8px; background: #fff; box-shadow: 0 18px 50px rgb(0 0 0 / .22); }
+#stardew-connection-guard strong { display: block; font-size: 16px; }
+#stardew-connection-guard p { margin: 8px 0 0; color: #606670; }
+@media (prefers-color-scheme: dark) {
+  #stardew-connection-guard { color: #f9fafb; }
+  #stardew-connection-guard > div { border-color: #484d55; background: #202123; }
+  #stardew-connection-guard p { color: #a9afb9; }
+}

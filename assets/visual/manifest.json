@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "createdAt": "2026-09-17",
+  "assets": [
+    {
+      "id": "app-icon-chicken-whale-v1",
+      "file": "app-icon-chicken-whale-v1.png",
+      "usage": "应用图标概念",
+      "stage": "prototype-master",
+      "width": 1254,
+      "height": 1254,
+      "hasAlpha": true,
+      "sha256": "37ba188697817c4947f6db88b7de717d6c8947cb4c232266b3d53902b88ee893",
+      "promptId": "app-icon-chicken-whale-v1",
+      "generator": "image_gen built-in"
+    },
+    {
+      "id": "welcome-farm-day-v1",
+      "file": "welcome-farm-day-v1.png",
+      "usage": "首次设置与欢迎区域",
+      "stage": "prototype-master",
+      "width": 1536,
+      "height": 1024,
+      "hasAlpha": false,
+      "sha256": "407a0b2bfaf5ec78184eef4c368dae800e0c565e0c78dc100171d67cf196a628",
+      "promptId": "welcome-farm-day-v1",
+      "generator": "image_gen built-in"
+    },
+    {
+      "id": "agent-farmer-idle-v1",
+      "file": "agent-farmer-idle-v1.png",
+      "usage": "等待目标的辅助插画",
+      "stage": "prototype-master",
+      "width": 1254,
+      "height": 1254,
+      "hasAlpha": true,
+      "sha256": "613f77a09c31595aa45aba06a1b5024e510f02e77e64a8778c091d69d74158a5",
+      "promptId": "agent-farmer-idle-v1",
+      "generator": "image_gen built-in"
+    },
+    {
+      "id": "agent-farmer-working-v1",
+      "file": "agent-farmer-working-v1.png",
+      "usage": "补能力过程的辅助插画",
+      "stage": "prototype-master",
+      "width": 1254,
+      "height": 1254,
+      "hasAlpha": true,
+      "sha256": "2aadebbe73f6bdec2f8b361583a76ed3cfa4dfdcf1447fa498bc20a9d8fdf132",
+      "promptId": "agent-farmer-working-v1",
+      "generator": "image_gen built-in"
+    }
+  ]
+}

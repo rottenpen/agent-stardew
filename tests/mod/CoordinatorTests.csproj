@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net6.0</TargetFramework><ImplicitUsings>enable</ImplicitUsings><Nullable>enable</Nullable></PropertyGroup>
+  <ItemGroup>
+    <Compile Include="../../mods/AgentStardew/ActionCoordinator.cs" Link="ActionCoordinator.cs" />
+    <Compile Include="../../mods/AgentStardew/Protocol.cs" Link="Protocol.cs" />
+    <Compile Include="../../mods/AgentStardew/BridgeServer.cs" Link="BridgeServer.cs" />
+    <Compile Include="../../mods/AgentStardew/InteractionEvidence.cs" Link="InteractionEvidence.cs" />
+    <Compile Include="../../mods/AgentStardew/MovementInput.cs" Link="MovementInput.cs" />
+  </ItemGroup>
+</Project>

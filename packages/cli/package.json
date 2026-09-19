@@ -1,0 +1,11 @@
+{
+  "name": "agent-stardew",
+  "version": "0.1.0",
+  "description": "通过本机 SMAPI Mod 观察和操作星露谷",
+  "type": "module",
+  "bin": { "agent-stardew": "dist/bin.js" },
+  "exports": { "./bin": "./dist/bin.js" },
+  "files": ["dist"],
+  "engines": { "node": ">=22" },
+  "dependencies": { "@agent-stardew/protocol": "workspace:*", "ws": "8.18.3" }
+}

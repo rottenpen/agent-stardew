@@ -1,0 +1,38 @@
+{
+  "name": "agent-stardew-workspace",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "packageManager": "pnpm@11.9.0",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "start": "node scripts/start.mjs",
+    "build": "pnpm build:ts && pnpm build:mod",
+    "build:ts": "node scripts/build.mjs",
+    "build:mod": "node scripts/build-mod.mjs",
+    "typecheck": "tsc --noEmit",
+    "test": "node --import tsx --test tests/integration/*.test.ts",
+    "pack:release": "node scripts/pack.mjs",
+    "check": "pnpm typecheck && pnpm build:ts && pnpm test",
+    "setup": "node scripts/setup.mjs",
+    "doctor": "node scripts/doctor.mjs",
+    "dev": "node scripts/dev.mjs",
+    "open": "node scripts/open.mjs",
+    "test:dsh": "node scripts/test-dsh.mjs",
+    "test:login": "node --test tests/dsh/login.test.mjs",
+    "test:mod": "node scripts/test-mod.mjs",
+    "test:game": "node --import tsx tests/game/record.ts",
+    "mock": "node --import tsx scripts/mock.mts",
+    "test:package": "node scripts/test-package.mjs"
+  },
+  "devDependencies": {
+    "@types/node": "22.18.0",
+    "@types/ws": "8.18.1",
+    "esbuild": "0.25.9",
+    "tsx": "4.20.5",
+    "typescript": "5.9.2",
+    "ws": "8.18.3"
+  }
+}
